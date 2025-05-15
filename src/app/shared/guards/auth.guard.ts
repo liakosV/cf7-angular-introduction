@@ -9,7 +9,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   if (userService.user$() && !userService.isTokenExpired()) {
     return true;
   } else {
-    return router.navigate(['user-login'])
+    return router.navigate(['login'])
   }
 
 };

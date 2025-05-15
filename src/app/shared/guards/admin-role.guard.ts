@@ -13,7 +13,7 @@ export const adminRoleGuard: CanActivateFn = (route, state) => {
   if(userService.user$() && hasPermission) {
     return true;
   } else {
-    return router.navigate(['user-login']);
+    return router.navigate(['restricted-content']);
   }
 
   

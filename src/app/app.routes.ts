@@ -11,10 +11,12 @@ import { ReactiveFormExampleComponent } from './components/reactive-form-example
 import { HttpClientExampleComponent } from './components/http-client-example/http-client-example.component';
 import { UserRegistrationComponent } from './components/user-registration/user-registration.component';
 import { UserLoginComponent } from './components/user-login/user-login.component';
+import { RestrictedContentComponent } from './components/restricted-content/restricted-content.component';
 
 // GUARDS
 import { authGuard } from './shared/guards/auth.guard';
 import { adminRoleGuard } from './shared/guards/admin-role.guard';
+
 
 
 export const routes: Routes = [
@@ -29,6 +31,7 @@ export const routes: Routes = [
   {path: 'reactive-form-example', component: ReactiveFormExampleComponent},
   {path: 'http-client-example', component: HttpClientExampleComponent},
   {path: 'user-registration', component: UserRegistrationComponent, canActivate: [authGuard, adminRoleGuard]},
-  {path: 'user-login', component: UserLoginComponent}
+  {path: 'login', component: UserLoginComponent},
+  {path: 'restricted-content', component: RestrictedContentComponent}
   
 ];
