@@ -2,7 +2,9 @@ import { Component, inject } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormGroup, FormControl, ReactiveFormsModule, Validators, AbstractControl } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
+import { FormGroup, FormControl, ReactiveFormsModule, Validators, AbstractControl, FormArray } from '@angular/forms';
 
 
 import { User } from 'src/app/shared/interfaces/user';
@@ -14,7 +16,9 @@ import { UserService } from 'src/app/shared/services/user.service';
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatIconModule
   ],
   templateUrl: './user-registration.component.html',
   styleUrl: './user-registration.component.css'
@@ -36,6 +40,12 @@ export class UserRegistrationComponent {
       area: new FormControl(''),
       road: new FormControl('')
     }),
+    phone: new FormArray([
+      new FormGroup({
+        number: new FormControl('', Validators.required),
+        type: new FormControl('', Validators.required)
+      })
+    ]),
     password: new FormControl('', [Validators.required, Validators.minLength(5)]),
     confirmPassword: new FormControl('', [Validators.required, Validators.minLength(5)])
   },
@@ -57,19 +67,35 @@ export class UserRegistrationComponent {
     return null;
   }
 
+  phone = this.form.get('phone') as FormArray;
+
+  addPhoneNumber() {
+    this.phone.push(
+      new FormGroup({
+        number: new FormControl('', Validators.required),
+        type: new FormControl('', Validators.required)
+      })
+    )
+  }
+
+  removePhoneNumber(index: number) {
+    this.phone.removeAt(index);
+  }
+
   onSubmit() {
-    // const data = this.form.value as User;
-    const data: User = {
-      'username': this.form.value.username || '',
-      'password': this.form.value.password || '',
-      'name': this.form.value.name || '',
-      'surname': this.form.value.surname || '',
-      'email': this.form.value.email || '',
-      'address': {
-        'area': this.form.value.address?.area || '',
-        'road': this.form.value.address?.road || ''
-      }
-    }
+    const data = this.form.value as User;
+    // console.log(this.form.value);
+    // const data: User = {
+    //   'username': this.form.value.username || '',
+    //   'password': this.form.value.password || '',
+    //   'name': this.form.value.name || '',
+    //   'surname': this.form.value.surname || '',
+    //   'email': this.form.value.email || '',
+    //   'address': {
+    //     'area': this.form.value.address?.area || '',
+    //     'road': this.form.value.address?.road || ''
+    //   }
+    // }
     console.log(data);
     this.userService.registerUser(data)
       .subscribe({
@@ -123,6 +149,10 @@ export class UserRegistrationComponent {
         area: 'area1',
         road: 'road1'
       },
+      phone: [{
+        number: "6912345678",
+        type: 'Mobile'
+      }],
       password: '12345',
       confirmPassword: '12345'
     })
